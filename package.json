@@ -1,0 +1,16 @@
+{
+  "name": "webcrawler",
+  "version": "1.0.0",
+  "description": "Simple web crawler written in javascript",
+  "main": "crawler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ratnesh Thakur",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "request": "^2.73.0",
+    "url-parse": "^1.1.1"
+  }
+}
