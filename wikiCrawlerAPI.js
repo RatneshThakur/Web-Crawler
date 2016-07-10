@@ -25,18 +25,26 @@ exports.runAround = function(req,res){
 function crawl(res){
    if(numPagesVisited >= 100 ) {
       console.log(" Oh we reached the limit. Stopping now");
-      res.send(pagesVisitedArray);
+      res.send(convertArrayToString(pagesVisitedArray));
    }
 
    var nextPageToVisit = pagesToVisit.pop();
    if(nextPageToVisit in pagesVisited) {
       //already visited page - stop right here;
       //console.log("alread visited this " + nextPageToVisit);
-      res.send(pagesVisitedArray);
+      res.send(convertArrayToString(pagesVisitedArray));
    }
    else{
      visitPage(nextPageToVisit, crawl,res);
    }
+}
+
+function convertArrayToString(pageArrays) {
+   var s = "";
+   for(var i=0; i<pageArrays.length; i++) {
+      s += (" " + pageArrays[i].substring(pageArrays[i].lastIndexOf("/") + 1) );
+   }
+   return s;
 }
 
 function visitPage(url, callback,res) {
