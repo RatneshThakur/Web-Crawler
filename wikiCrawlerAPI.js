@@ -13,26 +13,29 @@ var url = new URL(START_URL);
 var baseUrl = url.protocol + "//" + url.hostname;
 
 pagesToVisit.push(START_URL);
-crawl();
 
-function crawl() {
+
+exports.runAround = function(req,res){
+  crawl(res);
+}
+function crawl(res){
    if(numPagesVisited >= 100 ) {
       console.log(" Oh we reached the limit. Stopping now");
-      return;
+      res.send(pagesVisited);
    }
 
    var nextPageToVisit = pagesToVisit.pop();
    if(nextPageToVisit in pagesVisited) {
       //already visited page - stop right here;
-      console.log("alread visited this " + nextPageToVisit);
-      return;
+      //console.log("alread visited this " + nextPageToVisit);
+      res.send(pagesVisited);
    }
    else{
-     visitPage(nextPageToVisit, crawl);
+     visitPage(nextPageToVisit, crawl,res);
    }
 }
 
-function visitPage(url, callback) {
+function visitPage(url, callback,res) {
    pagesVisited[url] = true;
    numPagesVisited++;
 
@@ -41,13 +44,13 @@ function visitPage(url, callback) {
    request(url, function(error,response,body){
       if(response.statusCode !== 200) {
         //something happened. can't go ahead
-        callback();
+        callback(res);
         return;
       }
 
       var $ = cheerio.load(body);
       findFirstLinkInBody($);
-      callback();
+      callback(res);
    });
 }
 
@@ -59,7 +62,6 @@ function findFirstLinkInBody($) {
    var first = "";
    for(var i=0;i<relativePaths.length; i++) {
        var tempText = $(relativePaths[i]).text();
-       console.log("testing :: " + $(relativePaths[i]).attr('href') + " " + tempText);
        if($(relativePaths[i]).attr('href').length == 0)
           continue;
        if((tempText.indexOf(skipWord1) !== -1) || (tempText.indexOf(skipWord2) !== -1)){

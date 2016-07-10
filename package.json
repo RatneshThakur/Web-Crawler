@@ -9,7 +9,9 @@
   "author": "Ratnesh Thakur",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "cheerio": "^0.20.0",
+    "express": "^4.14.0",
     "request": "^2.73.0",
     "url-parse": "^1.1.1"
   }
